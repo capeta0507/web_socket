@@ -24,11 +24,10 @@
         width: 100%; 
         margin: 0 auto;background: wheat;
     }
-    form textarea { 
+    form input { 
         border: 2px solid rgb(139, 138, 138); 
         padding: 10px; 
         width: 100%; 
-        /* height: 130px; */
         margin-right: .5%;
     }
     form #n { 
@@ -66,15 +65,29 @@
         padding: 3px;
         display: flex;
     }
+    #msgDiv {
+      padding: 10px;
+      height: 600px;
+      /* background-color: aqua; */
+      overflow-y: auto;
+    }
+    /* .mesDiv div {
+      border: 1px solid white;
+      background-color: white;
+      border-radius: 20px;
+      font-size: 20px;
+    } */
   </style>
   <body>
-    <ul id="messages"></ul>
+    <div id="msgDiv">
+      <ul id="messages"></ul>
+    </div>
     <form action="">
       <div class="form_border">
         <span>Name：</span><input id="n" autocomplete="off" />
       </div>
       <div class="form_border">
-        <span>Message：</span><textarea id="m" autocomplete="off"></textarea>
+        <span>Message：</span><input id="m" autocomplete="off" />
       </div>
       <button>Send</button>
     </form>
@@ -93,7 +106,7 @@
           let getMes = $('#m').val();
           console.log(getName, getMes)
           if(getName.length === 0) {
-            alert('名字不能空白');
+            alert('你是誰');
             return false;
           } 
           if (getMes.length === 0) {
@@ -108,7 +121,7 @@
           return false;
         });
         socket.on('chat message', (sendMseeage) => {
-          $('#messages').append($('<li>').text(sendMseeage.getName + ' : ' + sendMseeage.getMes));
+          $('#messages').append($('<li class="mesDiv">').text(sendMseeage.getName + ' : ' + sendMseeage.getMes));
         });
     });
     </script>
