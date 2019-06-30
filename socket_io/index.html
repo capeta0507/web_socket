@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+      form { border:1px solid #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%;}
+      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages li { padding: 5px 10px; }
+      #messages li:nth-child(odd) { background: #eee; }
+      .form_border { border:1px solid rgb(83, 83, 83); padding: 3px; margin-bottom: 10px;}
+      .form_border span {padding: 3px;}
+    </style>
+  </head>
+  <body>
+    <ul id="messages"></ul>
+    <form action="">
+      <div class="form_border">
+        <span>Name：</span><input id="n" autocomplete="off" /><br />
+      </div>
+      <div class="form_border">
+        <span>Message：</span><input id="m" autocomplete="off" />
+      </div>
+      <button>Send</button>
+    </form>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      $(function () {
+        var socket = io();
+        var sendMseeage = {
+          getName: '',
+          getMes: ''
+        }
+        $('form').submit((e) => {
+          e.preventDefault(); // prevents page reloading
+          let getName = $('#n').val();
+          let getMes = $('#m').val();
+          console.log(getName, getMes)
+          if(getName.length === 0) {
+            alert('名字不能空白');
+            return false;
+          } 
+          if (getMes.length === 0) {
+            alert('請別寫空白訊息');
+            return false;
+          }
+          sendMseeage.getName = getName;
+          sendMseeage.getMes = getMes;
+          console.log(sendMseeage)
+          socket.emit('chat message',sendMseeage);
+          $('#m').val('');
+          return false;
+        });
+        socket.on('chat message', (sendMseeage) => {
+          $('#messages').append($('<li>').text(sendMseeage.getName + ' : ' + sendMseeage.getMes));
+        });
+    });
+    </script>
+  </body>
+</html>
