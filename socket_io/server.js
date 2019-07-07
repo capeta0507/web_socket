@@ -19,6 +19,14 @@ app.get('/', function(req, res){
 //   res.send('<h1>Hello world</h1>');
     res.sendFile(__dirname + '/index.html');
 });
+
+// 取得所有 chat-room/real-time-chat 的所有資料
+app.get('/chatdata',(req,res) =>{
+    dbo.collection("real-time-chat").find({}).toArray((err,result)=>{
+        if (err) throw err;
+        res.json(result);
+    })
+})
 // 設定連線 處理(Connection + socket.on + io.emit)
 io.on('connection', function(socket){
     // console.log('a user connected');
