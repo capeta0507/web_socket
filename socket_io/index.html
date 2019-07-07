@@ -59,7 +59,7 @@
       /* list-style-type: none;  */
       overflow: auto;
       margin: 0; 
-      padding: 0; 
+      padding: 10px; 
     }
     #messages .mesDiv { 
       width: 100%;
@@ -73,9 +73,6 @@
       padding: 5px 10px; 
       font-size: 20px;
       text-align: right;
-      /* transform: rotate(180deg);
-      direction: ltr; */
-      justify-content: flex-end;
     } 
     .Me {
       border: 1px solid rgb(173, 255, 170);
@@ -104,12 +101,9 @@
         display: flex;
     }
     #msgDiv {
-      padding: 10px;
+      /* padding: 10px; */
       height: 60vh;
       overflow-y: auto;
-      /* overflow: auto; */
-      /* transform: rotate(180deg); */
-      /* direction: rtl; */
     }
   </style>
   <body>
@@ -118,6 +112,18 @@
     </div>
     <div id="msgDiv">
       <div id="messages">
+        <!-- <div class="mesDiv"><span class="YouName">John</span>:<span class="You">Hi</span></div>
+        <div class="mesDiv"><span class="YouName">John</span>:<span class="You">Hi</span></div>
+        <div class="mesDiv"><span class="YouName">John</span>:<span class="You">Hi</span></div>
+        <div class="mesDiv"><span class="YouName">John</span>:<span class="You">Hi</span></div>
+        <div class="mesDiv"><span class="YouName">John</span>:<span class="You">Hi</span></div>
+        <div class="mesDiv"><span class="YouName">John</span>:<span class="You">Hi</span></div>
+        <div class="mesDiv"><span class="YouName">John</span>:<span class="You">Hi</span></div>
+        <div class="mesMe"><span class="Me">Yes</span></div>
+        <div class="mesMe"><span class="Me">Yes</span></div>
+        <div class="mesMe"><span class="Me">Yes</span></div>
+        <div class="mesMe"><span class="Me">Yes</span></div>
+        <div class="mesMe"><span class="Me">Yes</span></div> -->
       </div>
     </div>
     <form action="">
@@ -134,11 +140,14 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
       $(function () {
-        var htmlobj = $.ajax({url:"http://192.168.0.17:3000/chatdata",async:false});
+        var htmlobj = $.ajax({url:'http://192.168.0.17:3000/chatdata',async:false});
+        let data = htmlobj.responseJSON
         console.log('htmlobj', htmlobj.responseJSON);
-        for(let x = 0; x<=htmlobj.length; x++) {
-
+        let Msg = ''
+        for(let x = 0; x<=10; x++) {
+          Msg += '<div class="mesDiv"><span class="YouName">' + data[x].name + ' : <span class="You">' + data[x].message + '</span></div>'
         }
+        $('#messages').html(Msg)
         var socket = io();
         var sendMseeage = {
           getName: '',
@@ -168,8 +177,6 @@
           let myName = $('#n').val();
           console.log('myName', sendMseeage.getName)
           if (myName === sendMseeage.getName) {
-            // $('#messages').css({'justify-content': 'flex-end'})
-            // $('#messages').append($('<div class="mesMe">').text(sendMseeage.getMes));
               $('#messages').append('<div class="mesMe"><span class="Me">' + sendMseeage.getMes + '</span></div>');
           } else {
             $('#messages').append($('<div class="mesDiv"><span class="YouName">' + sendMseeage.getName + '</span> : <span class="You"> ' + sendMseeage.getMes + '</span></div>'));
