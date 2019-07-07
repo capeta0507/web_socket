@@ -38,13 +38,14 @@
       margin: 0; 
       padding: 0; 
   }
-  #messages li { 
-    margin: 20px 0 0 10px;
+  #messages .mesDiv { 
+    margin: 10px 0 0 10px;
     padding: 5px 10px; 
     font-size: 20px;
     border: 1px solid white;
     background-color: white;
     border-radius: 20px;
+    /* justify-content: flex-end; */
   }
   /* #messages li:nth-child(odd) { 
       background: #eee; 
@@ -62,3 +63,11 @@
     border-radius: 20px;
     font-size: 20px;
   } */
+  #messages .mesMe {
+    margin: 10px 0 0 10px;
+    padding: 5px 10px; 
+    font-size: 20px;
+    border: 1px solid rgb(9, 255, 0);
+    background-color: rgb(9, 255, 0);
+    border-radius: 20px;
+  }

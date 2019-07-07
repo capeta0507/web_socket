@@ -13,53 +13,91 @@
       box-sizing: border-box; 
     }
     body { 
-        font: 13px Helvetica, Arial; 
-        background: #eee;
+      font: 13px Helvetica, Arial; 
+      background: #eee;
+    }
+    .header {
+      width: 100%;
+      height: 50px;
+      text-align: center;
+      line-height: 50px;
+      background-color: aqua;
     }
     form { 
-        border:1px solid #000; 
-        padding: 10px; 
-        position: fixed; 
-        bottom: 0; 
-        width: 100%; 
-        margin: 0 auto;background: wheat;
+      border:1px solid #000; 
+      padding: 10px; 
+      position: fixed; 
+      bottom: 0; 
+      width: 100%; 
+      margin: 0 auto;background: wheat;
     }
     form input { 
-        border: 2px solid rgb(139, 138, 138); 
-        padding: 10px; 
-        width: 100%; 
-        margin-right: .5%;
+      border: 2px solid rgb(139, 138, 138); 
+      padding: 10px; 
+      width: 100%; 
+      margin-right: .5%;
     }
     form #n { 
-        border: 2px solid rgb(139, 138, 138); 
-        padding: 10px; 
-        width: 200px; 
-        margin-right: .5%;
+      border: 2px solid rgb(139, 138, 138); 
+      padding: 10px; 
+      width: 50%; 
+      margin-right: .5%;
+    }
+    form #m { 
+      border: 2px solid rgb(139, 138, 138); 
+      padding: 10px; 
+      /* width: 200px;  */
+      margin-right: .5%;
     }
     form button { 
-        width: 150px; 
-        background: rgb(130, 224, 255); 
-        border: none; 
-        padding: 10px; 
+      width: 150px; 
+      background: rgb(130, 224, 255); 
+      border: none; 
+      padding: 10px; 
     }
     #messages { 
-        list-style-type: none; 
-        margin: 0; 
-        padding: 0; 
+      /* list-style-type: none;  */
+      overflow: auto;
+      margin: 0; 
+      padding: 0; 
     }
-    #messages li { 
-      margin: 20px 0 0 10px;
+    #messages .mesDiv { 
+      width: 100%;
+      margin: 5px 0 0 5px;
       padding: 5px 10px; 
       font-size: 20px;
-      border: 1px solid white;
+    }
+    #messages .mesMe {
+      width: 100%;
+      margin: 5px 0 0 5px;
+      padding: 5px 10px; 
+      font-size: 20px;
+      text-align: right;
+      /* transform: rotate(180deg);
+      direction: ltr; */
+      justify-content: flex-end;
+    } 
+    .Me {
+      border: 1px solid rgb(173, 255, 170);
+      background-color: rgb(173, 255, 170);
+      border-radius: 20px;
+      padding: 5px;
+    }
+    .You {
+      border: 1px splid white;
       background-color: white;
       border-radius: 20px;
+      padding: 5px;
+    }
+    .YouName {
+      color: blue;
     }
     /* #messages li:nth-child(odd) { 
         background: #eee; 
     } */
     .form_border { 
         margin-bottom: 10px;
+        display: flex;
     }
     .form_border span {
         padding: 3px;
@@ -67,34 +105,40 @@
     }
     #msgDiv {
       padding: 10px;
-      height: 600px;
-      /* background-color: aqua; */
+      height: 60vh;
       overflow-y: auto;
+      /* overflow: auto; */
+      /* transform: rotate(180deg); */
+      /* direction: rtl; */
     }
-    /* .mesDiv div {
-      border: 1px solid white;
-      background-color: white;
-      border-radius: 20px;
-      font-size: 20px;
-    } */
   </style>
   <body>
+    <div class="header">
+      <h1>Chat Room</h1>
+    </div>
     <div id="msgDiv">
-      <ul id="messages"></ul>
+      <div id="messages">
+      </div>
     </div>
     <form action="">
       <div class="form_border">
-        <span>Name：</span><input id="n" autocomplete="off" />
+        <span>Name：</span><input class='mySend' id="n" autocomplete="off" />
+        <span>Message：</span><input class='mySend' id="m" autocomplete="off" />
+        <button onclick="msgDiv.scrollTop = msgDiv.scrollHeight">Send</button>
       </div>
-      <div class="form_border">
-        <span>Message：</span><input id="m" autocomplete="off" />
-      </div>
-      <button>Send</button>
+      <!-- <div class="form_border">
+        <span>Message：</span><input class='mySend' id="m" autocomplete="off" />
+      </div> -->
     </form>
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
       $(function () {
+        var htmlobj = $.ajax({url:"http://192.168.0.17:3000/chatdata",async:false});
+        console.log('htmlobj', htmlobj.responseJSON);
+        for(let x = 0; x<=htmlobj.length; x++) {
+
+        }
         var socket = io();
         var sendMseeage = {
           getName: '',
@@ -110,7 +154,7 @@
             return false;
           } 
           if (getMes.length === 0) {
-            alert('請別寫空白訊息');
+            alert('沒寫內容誒！');
             return false;
           }
           sendMseeage.getName = getName;
@@ -121,7 +165,16 @@
           return false;
         });
         socket.on('chat message', (sendMseeage) => {
-          $('#messages').append($('<li class="mesDiv">').text(sendMseeage.getName + ' : ' + sendMseeage.getMes));
+          let myName = $('#n').val();
+          console.log('myName', sendMseeage.getName)
+          if (myName === sendMseeage.getName) {
+            // $('#messages').css({'justify-content': 'flex-end'})
+            // $('#messages').append($('<div class="mesMe">').text(sendMseeage.getMes));
+              $('#messages').append('<div class="mesMe"><span class="Me">' + sendMseeage.getMes + '</span></div>');
+          } else {
+            $('#messages').append($('<div class="mesDiv"><span class="YouName">' + sendMseeage.getName + '</span> : <span class="You"> ' + sendMseeage.getMes + '</span></div>'));
+          }
+          // $('#messages').append($('<li class="mesDiv">').text(sendMseeage.getName + ' : ' + sendMseeage.getMes));
         });
     });
     </script>
