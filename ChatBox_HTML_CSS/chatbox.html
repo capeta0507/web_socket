@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Chat room</title>
+    <link rel="stylesheet"  type="text/css" href="./chatbox.css">
+</head>
+<body>
+    <div class="chatbox">
+		<div id="chatDialog" class="chatlogs">
+			<div class="chat friend">
+				<div class="user-photo"><img src="./img/candy.jpg"></div>
+				<p class="chat-message">What's up, Brother ..!!</p>	
+			</div>
+			<div class="chat friend">
+				<div class="user-photo"><img src="./img/rebecca.jpg"></div>
+				<p class="chat-message">What's up, Brother ..!!</p>	
+			</div>
+			<div class="chat self">
+				<div class="user-photo"><img src="./img/davidtpe.jpg"></div>
+				<p class="chat-message">What's up ..!!</p>	
+			</div>
+			<div class="chat self">
+				<div class="user-photo"><img src="./img/davidtpe.jpg"></div>
+				<p class="chat-message">Lorem ipsum dolor sit, amet cons adipisicing elit. Repudiandae!</p>	
+			</div>
+			<div class="chat friend">
+				<div class="user-photo"><img src="./img/johnny.jpg"></div>
+				<p class="chat-message">Todos as descrições das pessoas são sobre a humanidade do atendimento, a pessoa pega no pulso, examina, olha com carinho.</p>	
+            </div>
+            <div class="chat self">
+				<div class="user-photo"><img src="./img/davidtpe.jpg"></div>
+				<p class="chat-message">OK , I understand ..!!</p>	
+            </div>
+            <div class="chat self">
+				<div class="user-photo"><img src="./img/davidtpe.jpg"></div>
+				<p class="chat-message">Thank Reecca & Johnny ..!!</p>	
+            </div>
+		</div>
+		<div class="chat-form">
+			<textarea id="chatMessage"></textarea>
+			<button id='sendMessage' onclick="sendMessage();">Send</button>
+		</div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+        function sendMessage(){
+            // console.log('sendMessage ...');
+            // console.log(chatDialog.scrollHeight);
+            // console.log(chatDialog.scrollTop);
+            var myMsg = $('#chatMessage').val();
+            console.log(myMsg);
+            let newMsg = `<div class="chat self">
+				            <div class="user-photo"><img src="./img/davidtpe.jpg"></div>
+				            <p class="chat-message">${myMsg}</p>	
+                          </div>`
+            $('#chatDialog').append(newMsg);
+            chatDialog.scrollTop = chatDialog.scrollHeight
+        }
+    
+    
+    </script>
+</body>
+
+</html>
