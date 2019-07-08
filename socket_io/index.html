@@ -140,7 +140,7 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
       $(function () {
-        var htmlobj = $.ajax({url:'http://192.168.0.17:3000/chatdata',async:false});
+        var htmlobj = $.ajax({url:'http://localhost:3000/chatdata',async:false});
         let data = htmlobj.responseJSON
         console.log('htmlobj', htmlobj.responseJSON);
         let Msg = ''
@@ -182,6 +182,12 @@
             $('#messages').append($('<div class="mesDiv"><span class="YouName">' + sendMseeage.getName + '</span> : <span class="You"> ' + sendMseeage.getMes + '</span></div>'));
           }
           // $('#messages').append($('<li class="mesDiv">').text(sendMseeage.getName + ' : ' + sendMseeage.getMes));
+            
+            // let thisMessage = document.getElementById('messages');
+            
+            // 滾動區域不是 id='messages' , 而是 id='msgDiv'
+            let thismsgDiv = document.getElementById('msgDiv');
+            thismsgDiv.scrollTop = thismsgDiv.scrollHeight;
         });
     });
     </script>
