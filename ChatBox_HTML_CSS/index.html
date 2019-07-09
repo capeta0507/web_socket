@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Char Room Login</title>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="img/chat.ico"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+<!--===============================================================================================-->
+</head>
+<body>
+	
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100">
+				<div class="login100-form-title" style="background-image: url('img/bg-01.jpg');">
+					<span class="login100-form-title-1">
+						Sign In
+					</span>
+				</div>
+
+				<form class="login100-form validate-form">
+					<!-- <div class="wrap-input100 validate-input m-b-26" data-validate="Username is required">
+						<span class="label-input100">Username</span>
+						<input class="input100" type="text" name="username" placeholder="Enter username">
+						<span class="focus-input100"></span>
+					</div> -->
+
+					<div class="wrap-input100 validate-input m-b-18" data-validate="Username is required">
+						<span class="label-input100">Username</span>
+						<select id='myUser' class="input100" name="usernameselect" placeholder="Select username">
+							<option value='none'>(選取使用者)</option>
+							<option value='davidtpe'>David</option>
+							<option value='candy'>Candy</option>
+							<option value='johnny'>Johnny</option>
+							<option value='sandy'>Sandy</option>
+							<option value='rebecca'>Rebecca</option>
+						</select>
+						<span class="focus-input100"></span>
+					</div>
+
+					<div class="wrap-input100 validate-input m-b-18" data-validate = "Password is required">
+						<span class="label-input100">Password</span>
+						<input id='myPassword' class="input100" type="password" name="pass" placeholder="Enter password">
+						<span class="focus-input100"></span>
+					</div>
+
+					<div class="flex-sb-m w-full p-b-30">
+						<!-- <div class="contact100-form-checkbox">
+							<input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
+							<label class="label-checkbox100" for="ckb1">
+								Remember me
+							</label>
+						</div>
+
+						<div>
+							<a href="#" class="txt1">
+								Forgot Password?
+							</a>
+						</div> -->
+					</div>
+
+					<div class="container-login100-form-btn">
+						<button id='btnLogin' class="login100-form-btn">
+							Login
+						</button>
+						&nbsp;&nbsp;&nbsp;
+						<img id='myUserImg' class='login100-form-img' src='./img/none.jpg'>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+<!--===============================================================================================-->
+	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+<!--===============================================================================================-->
+<script src="js/main.js"></script>
+<script>
+	$(document).ready(()=>{
+		// 使用者 選單
+		$('#myUser').change(()=>{
+			// console.log($('#myUser').val());
+			$('#myUserImg').attr('src','./img/' + $('#myUser').val() + ".jpg" )
+		});
+
+		// Login
+		$('#btnLogin').click((e)=>{
+			e.preventDefault();
+			console.log('Login...');
+			let loginName = $('#myUser').val();
+			let loginPassword = $('#myPassword').val().trim();
+			if (loginName == 'none') {
+				alert('選取 username...');
+				return false;
+			}
+			if (loginPassword.length == 0) {
+				alert('輸入 Password...');
+				return false;
+			}
+			$('#myUser').val('none');
+			window.open('./chatbox.html?username=' + loginName, '_self');
+			// window.close();
+		})
+	})
+</script>
+</body>
+</html>

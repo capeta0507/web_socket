@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Chat room</title>
-    <link rel="stylesheet"  type="text/css" href="./chatbox.css">
+	<link rel="stylesheet"  type="text/css" href="./css/chatbox.css">
+	<link rel="stylesheet" type="text/css" href="./css/main.css">
 </head>
 <body>
     <div class="chatbox">
+		
 		<div id="chatDialog" class="chatlogs">
 			<div class="chat friend">
 				<div class="user-photo"><img src="./img/candy.jpg"></div>
@@ -43,25 +45,40 @@
 			<textarea id="chatMessage"></textarea>
 			<button id='sendMessage' onclick="sendMessage();">Send</button>
 		</div>
+		<div style='display: flex;'>
+			<span>User &nbsp;: &nbsp; </span><span id='myLoginName'>none</span>
+			<!-- <img id='myUserImg' class='login100-form-img' src='./img/none.jpg'> -->
+		</div>
     </div>
     
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
+		var myUser = '';  //Login user name
+		var myPhoto = ''; //Login user JPG
+		$(document).ready(()=>{
+			// 使用者 
+			// console.log(location.search);
+			myUser = location.search.split('username=')[1]
+			myPhoto = './img/' + myUser + '.jpg';
+			// console.log('User : ' , myUser,myPhoto);
+			$('#myLoginName').text(myUser);
+			// $('#myUserImg').attr('src','./img/' + myUser + ".jpg")
+		})
+		// 傳送訊息
         function sendMessage(){
             // console.log('sendMessage ...');
             // console.log(chatDialog.scrollHeight);
             // console.log(chatDialog.scrollTop);
             var myMsg = $('#chatMessage').val();
-            console.log(myMsg);
+            // console.log(myMsg);
             let newMsg = `<div class="chat self">
-				            <div class="user-photo"><img src="./img/davidtpe.jpg"></div>
+				            <div class="user-photo"><img src="${myPhoto}"></div>
 				            <p class="chat-message">${myMsg}</p>	
                           </div>`
             $('#chatDialog').append(newMsg);
             chatDialog.scrollTop = chatDialog.scrollHeight
         }
-    
-    
+
     </script>
 </body>
 
