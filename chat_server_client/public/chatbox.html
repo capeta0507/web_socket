@@ -61,17 +61,21 @@
 			getChatData();
 
 			let newMsg = ''
+			// 監聽 Server所傳回來的訊息
 			socket.on('chat message', (sendMseeage) => {
+				// 取得訊息 & 人頭圖片
 				myMsg = sendMseeage.getMsg;
 				myPhoto = './img/' + sendMseeage.getName + '.jpg';
 				// 判斷是否本人的訊息
 				if (myUser === sendMseeage.getName) {
+					// 顯示自己的對話訊息
 					newMsg = `<div class="chat self">
 				            	<div class="user-photo"><img src="${myPhoto}"></div>
 				            	<p class="chat-message">${myMsg}</p>	
                           	  </div>`
             		$('#chatDialog').append(newMsg);
 				} else {
+					// 顯示朋友的對話訊息
 					newMsg = `<div class="chat friend">
 				            	<div class="user-photo"><img src="${myPhoto}"></div>
 				            	<p class="chat-message">${myMsg}</p>	
@@ -86,16 +90,18 @@
         function sendMessage(){
             // console.log('sendMessage ...');
             // console.log(chatDialog.scrollHeight);
-            // console.log(chatDialog.scrollTop);
+			// console.log(chatDialog.scrollTop);
+			// 必須有訊息資料
 			var myMsg = $('#chatMessage').val().trim();
 			if (myMsg == '') {
 				alert('請輸入訊息...');
 				return false;
 			}
 			// console.log(myMsg);
-			// 傳送回 server
+			// 傳送回 server (User + Message)
 			sendMseeage.getName = myUser;
 			sendMseeage.getMsg = myMsg;
+			// 傳送到 Server
 			socket.emit('chat message',sendMseeage);
 			$('#chatMessage').val('');
 			return false;
@@ -111,18 +117,20 @@
 			for(let x = 0; x< data.length; x++) {
 				// console.log(data[x]);
 				Msg = data[x];
-				console.log(Msg.name , Msg.message);
-
+				// console.log(Msg.name , Msg.message);
+				// 取得訊息 & 人頭圖片
 				myMsg = Msg.message;
 				myPhoto = './img/' + Msg.name + '.jpg';
 				// 判斷是否本人的訊息
 				if (myUser === Msg.name) {
+					// 顯示自己的對話訊息
 					newMsg = `<div class="chat self">
 				            	<div class="user-photo"><img src="${myPhoto}"></div>
 				            	<p class="chat-message">${myMsg}</p>	
                           	  </div>`
             		$('#chatDialog').append(newMsg);
 				} else {
+					// 顯示朋友的對話訊息
 					newMsg = `<div class="chat friend">
 				            	<div class="user-photo"><img src="${myPhoto}"></div>
 				            	<p class="chat-message">${myMsg}</p>	

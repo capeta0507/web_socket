@@ -90,9 +90,10 @@
 		// Login
 		$('#btnLogin').click((e)=>{
 			e.preventDefault();
-			console.log('Login...');
+			// console.log('Login...');
 			let loginName = $('#myUser').val();
 			let loginPassword = $('#myPassword').val().trim();
+			// 資料必須輸入
 			if (loginName == 'none') {
 				alert('選取 username...');
 				return false;
@@ -102,6 +103,7 @@
 				return false;
 			}
 			$('#myUser').val('none');
+			// 開啟下一個畫面 (聊天室)
 			window.open('./chatbox.html?username=' + loginName, '_self');
 			// window.close();
 		})
