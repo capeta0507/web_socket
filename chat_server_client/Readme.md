@@ -10,4 +10,4 @@
 
 執行結果：
  ![Login](/chat_server_client/public/img/login.JPG)
- ![Chat Box](/chat_server_client/public/img/chatbox.JPG)
+ ![Chat Box](/chat_server_client/public/img/chatbox.jpg)
