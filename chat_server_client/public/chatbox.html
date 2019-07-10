@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Chat room</title>
+	<link rel="stylesheet"  type="text/css" href="./css/chatbox.css">
+	<link rel="stylesheet" type="text/css" href="./css/main.css">
+</head>
+<body>
+    <div class="chatbox">
+		<div id="chatDialog" class="chatlogs">
+			<!-- <div class="chat friend">
+				<div class="user-photo"><img src="./img/davidtpe.jpg"></div>
+				<p class="chat-message">What's up, Brother ..!!</p>	
+			</div>
+			<div class="chat friend">
+				<div class="user-photo"><img src="./img/johnny.jpg"></div>
+				<p class="chat-message">What's up, Brother ..!!</p>	
+			</div>
+			<div class="chat self">
+				<div class="user-photo"><img src="./img/rebecca.jpg"></div>
+				<p class="chat-message">What's up ..!!</p>	
+			</div> -->
+		</div>
+		<div class="chat-form">
+			<textarea id="chatMessage"></textarea>
+			<button id='sendMessage' onclick="sendMessage();">Send</button>
+		</div>
+		<div style='display: flex;'>
+			<span>User &nbsp;: &nbsp; </span><span id='myLoginName'>none</span>
+			<!-- <img id='myUserImg' class='login100-form-img' src='./img/none.jpg'> -->
+		</div>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+		var myUser = '';  //Login user name
+		var myPhoto = ''; //Login user JPG
+		// 傳送 / 接收訊息
+		// Chat message class
+		var sendMseeage = {
+			getName: '',
+			getMsg: ''
+		}
+		var socket
+		$(document).ready(()=>{
+			// 使用者 
+			// console.log(location.search);
+			myUser = location.search.split('username=')[1]
+			myPhoto = './img/' + myUser + '.jpg';
+			// console.log('User : ' , myUser,myPhoto);
+			$('#myLoginName').text(myUser);
+			// $('#myUserImg').attr('src','./img/' + myUser + ".jpg")
+
+			// 連線 socket 
+			socket = io();
+			
+			// 取得 Chat room 歷史紀錄
+			getChatData();
+
+			let newMsg = ''
+			socket.on('chat message', (sendMseeage) => {
+				myMsg = sendMseeage.getMsg;
+				myPhoto = './img/' + sendMseeage.getName + '.jpg';
+				// 判斷是否本人的訊息
+				if (myUser === sendMseeage.getName) {
+					newMsg = `<div class="chat self">
+				            	<div class="user-photo"><img src="${myPhoto}"></div>
+				            	<p class="chat-message">${myMsg}</p>	
+                          	  </div>`
+            		$('#chatDialog').append(newMsg);
+				} else {
+					newMsg = `<div class="chat friend">
+				            	<div class="user-photo"><img src="${myPhoto}"></div>
+				            	<p class="chat-message">${myMsg}</p>	
+                          	  </div>`
+            		$('#chatDialog').append(newMsg);
+				}
+				// 卷軸 跑道最下面 (最新訊息)
+				chatDialog.scrollTop = chatDialog.scrollHeight
+			});
+		})
+		// 傳送訊息
+        function sendMessage(){
+            // console.log('sendMessage ...');
+            // console.log(chatDialog.scrollHeight);
+            // console.log(chatDialog.scrollTop);
+			var myMsg = $('#chatMessage').val().trim();
+			if (myMsg == '') {
+				alert('請輸入訊息...');
+				return false;
+			}
+			// console.log(myMsg);
+			// 傳送回 server
+			sendMseeage.getName = myUser;
+			sendMseeage.getMsg = myMsg;
+			socket.emit('chat message',sendMseeage);
+			$('#chatMessage').val('');
+			return false;
+		}
+		
+		// 取得 Chat room 歷史紀錄
+		function getChatData(){
+			$('#chatDialog').html('');
+			var htmlobj = $.ajax({url:'/chatdata',async:false});
+			let data = htmlobj.responseJSON
+			// console.log('htmlobj', data);
+			let Msg = ''
+			for(let x = 0; x< data.length; x++) {
+				// console.log(data[x]);
+				Msg = data[x];
+				console.log(Msg.name , Msg.message);
+
+				myMsg = Msg.message;
+				myPhoto = './img/' + Msg.name + '.jpg';
+				// 判斷是否本人的訊息
+				if (myUser === Msg.name) {
+					newMsg = `<div class="chat self">
+				            	<div class="user-photo"><img src="${myPhoto}"></div>
+				            	<p class="chat-message">${myMsg}</p>	
+                          	  </div>`
+            		$('#chatDialog').append(newMsg);
+				} else {
+					newMsg = `<div class="chat friend">
+				            	<div class="user-photo"><img src="${myPhoto}"></div>
+				            	<p class="chat-message">${myMsg}</p>	
+                          	  </div>`
+            		$('#chatDialog').append(newMsg);
+				}
+			}
+			// 卷軸 跑道最下面 (最新訊息)
+			// chatDialog.scrollTop = chatDialog.scrollHeight
+		}
+
+    </script>
+</body>
+
+</html>
