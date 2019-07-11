@@ -5,7 +5,7 @@ var io = require('socket.io')(http);
 var moment = require('moment');
 
 // PORT
-const PORT = PORT || 3000;
+const PORT = process.env.PORT || 3000;
 // const HOST = '127.0.0.1';
 
 // 提供靜態檔案顯示

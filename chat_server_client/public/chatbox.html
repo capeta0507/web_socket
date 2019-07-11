@@ -110,9 +110,19 @@
 		// 取得 Chat room 歷史紀錄
 		function getChatData(){
 			$('#chatDialog').html('');
-			var htmlobj = $.ajax({url:'/chatdata',async:false});
-			let data = htmlobj.responseJSON
-			// console.log('htmlobj', data);
+			// var htmlobj = $.ajax({url:'/chatdata',async:false});
+			// let data = htmlobj.responseJSON
+			$.ajax({
+				type:'get',
+				url:'/chatdata',
+				success:(data)=>{
+					// console.log('chatdata:', data);
+					showChatData(data);
+				}
+			})
+		}
+
+		function showChatData(data){
 			let Msg = ''
 			for(let x = 0; x< data.length; x++) {
 				// console.log(data[x]);
@@ -141,7 +151,6 @@
 			// 卷軸 跑道最下面 (最新訊息)
 			// chatDialog.scrollTop = chatDialog.scrollHeight
 		}
-
     </script>
 </body>
 
